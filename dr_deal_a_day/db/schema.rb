@@ -13,11 +13,10 @@
 
 ActiveRecord::Schema.define(version: 20150930075812) do
 
-  create_table "data_files", force: :cascade do |t|
+  create_table "imports", force: :cascade do |t|
     t.string   "file_name"
-    t.text     "file_contents"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "items", force: :cascade do |t|
@@ -35,7 +34,7 @@ ActiveRecord::Schema.define(version: 20150930075812) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.integer  "data_file_id"
+    t.integer  "import_id"
     t.integer  "merchant_id"
     t.integer  "item_id"
     t.integer  "purchaser_id"
