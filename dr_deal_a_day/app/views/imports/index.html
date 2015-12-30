@@ -1,0 +1,30 @@
+<h1>Imports</h1>
+<% revenue = 32.00 %>
+<h3>Total Revenue: <%= revenue %></h3>
+
+<h4><a id="upload_form_toggle" href="#">Upload a new Form</a></h4>
+<%= form_tag imports_path, multipart: true do %>
+  <%= file_field_tag :import_file %>
+  <%= submit_tag 'Upload' %>
+<% end %>
+<br />
+
+<table>
+  <thead>
+    <tr>
+      <th>File Name</th>
+      <th>Date Uploaded</th>
+      <th>Revenue</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>imports.csv</td>
+      <td>12-12-1222</td>
+      <td>$12.34</td>
+      <td><a href="#">View</a></td>
+    </tr>
+  </tbody>
+</table>
+
