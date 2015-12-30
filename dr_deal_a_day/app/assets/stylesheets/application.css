@@ -20,3 +20,10 @@ table, th, td {
   border-collapse: collapse;
  }
 
+#upload_form {
+  display: inline-block;
+  background-color: #eee;
+  border: 1px solid;
+  padding: 20px;
+  margin: 10px 0px;
+}

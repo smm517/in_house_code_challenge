@@ -1,12 +1,14 @@
-<h1>Imports</h1>
+<h1>Data Imports</h1>
 
-<h4><a id="show_upload" href="#">Upload a new Form</a></h4>
-<%= form_tag imports_path, multipart: true, id: 'upload_form', style: "display:none;" do %>
-  <%= file_field_tag :import_file %>
-  <%= submit_tag 'Upload' %>
-  &nbsp;<a id="hide_upload" href="#">cancel</a>
-<% end %>
-<br />
+<h4><a id="show_upload" href="#">Upload a new data file</a></h4>
+
+<div id="upload_form" style="display:none;">
+  <%= form_tag imports_path, multipart: true do %>
+    <%= file_field_tag :import_file %>
+    <%= submit_tag 'Upload' %>
+    &nbsp;<a id="hide_upload" href="#">cancel</a>
+  <% end %>
+</div>
 
 <table>
   <thead>
