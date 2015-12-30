@@ -2,6 +2,7 @@ class ImportsController < ApplicationController
 
   def index
     @imports = Import.all
+    @total_revenue = Order.total_revenue
   end
 
   def create

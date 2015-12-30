@@ -1,11 +1,10 @@
 <h1>Imports</h1>
-<% revenue = 32.00 %>
-<h3>Total Revenue: <%= revenue %></h3>
 
-<h4><a id="upload_form_toggle" href="#">Upload a new Form</a></h4>
-<%= form_tag imports_path, multipart: true do %>
+<h4><a id="show_upload" href="#">Upload a new Form</a></h4>
+<%= form_tag imports_path, multipart: true, id: 'upload_form', style: "display:none;" do %>
   <%= file_field_tag :import_file %>
   <%= submit_tag 'Upload' %>
+  &nbsp;<a id="hide_upload" href="#">cancel</a>
 <% end %>
 <br />
 
@@ -19,12 +18,30 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>imports.csv</td>
-      <td>12-12-1222</td>
-      <td>$12.34</td>
-      <td><a href="#">View</a></td>
-    </tr>
+    <% @imports.each do |import| %>
+      <tr>
+        <td><%= import.file_name %></td>
+        <td><%= import.created_at%></td>
+        <td><%= number_to_currency(import.revenue) %></td>
+        <td><a href="#">View</a></td>
+      </tr>
+    <% end %>
   </tbody>
 </table>
+<h3>Total Revenue: <%= number_to_currency(@total_revenue) %></h3>
 
+<script>
+  var show_upload = $("#show_upload");
+  var hide_upload = $("#hide_upload");
+  var upload_form = $("#upload_form");
+
+  show_upload.on('click', function() {
+    $(this).hide();
+    upload_form.show();
+  });
+
+  hide_upload.on('click', function() {
+    upload_form.hide();
+    show_upload.show();
+  });
+</script>

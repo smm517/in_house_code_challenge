@@ -29,4 +29,15 @@ class Import < ActiveRecord::Base
     # TODO error handling
   end
 
+  def revenue
+    Import.connection.select_value(
+      <<-SQL
+        SELECT SUM(items.price)
+        FROM items, orders
+        WHERE orders.item_id = items.id
+          AND orders.import_id = #{self.id}
+      SQL
+    )
+  end
+
 end
