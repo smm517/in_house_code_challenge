@@ -11,6 +11,7 @@ class ImportsController < ApplicationController
   end
 
   def show
+    @import = Import.find(params[:id])
   end
 
   def destroy

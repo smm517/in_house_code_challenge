@@ -1,0 +1,29 @@
+<h1>Import from <%= @import.created_at %></h1>
+<h4>Filename: <%= @import.file_name %></h4>
+<h3>Import Summary</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Purchaser Name</th>
+      <th>Item Description</th>
+      <th>Item Price</th>
+      <th>Quantity</th>
+      <th>Merchant Address</th>
+      <th>Merchant Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @import.orders.each do |order| %>
+      <tr>
+        <td><%= order.purchaser.name %></td>
+        <td><%= order.item.name %></td>
+        <td><%= number_to_currency(order.item.price) %></td>
+        <td><%= order.quantity %></td>
+        <td><%= order.merchant.address %></td>
+        <td><%= order.merchant.name %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<h3>Revenue from this import: <%= number_to_currency(@import.revenue) %></h3>

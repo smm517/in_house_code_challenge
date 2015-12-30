@@ -23,7 +23,7 @@
         <td><%= import.file_name %></td>
         <td><%= import.created_at%></td>
         <td><%= number_to_currency(import.revenue) %></td>
-        <td><a href="#">View</a></td>
+        <td><%= link_to "View", import_path(import) %></td>
       </tr>
     <% end %>
   </tbody>
