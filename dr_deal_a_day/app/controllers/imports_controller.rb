@@ -52,8 +52,12 @@ class ImportsController < ApplicationController
 
   def destroy
     import = Import.find(params[:id])
-    import.orders.destroy_all
-    import.destroy!
+
+    if import.destroy
+      flash[:notice] = "Import was deleted successfully."
+    else
+      flash[:alert] = "Error: import was deletion was unsuccessful."
+    end
 
     redirect_to action: :index
   end

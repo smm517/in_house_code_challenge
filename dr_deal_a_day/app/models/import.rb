@@ -1,7 +1,7 @@
 class Import < ActiveRecord::Base
   require 'csv'
 
-  has_many :orders
+  has_many :orders, dependent: :destroy
 
   def self.run_import(file_path, original_filename, options = {})
 
@@ -26,7 +26,6 @@ class Import < ActiveRecord::Base
       item = Item.new(name: row[:item_description], price: row[:item_price]) if item.nil?
 
       if (!purchaser.valid? || !merchant.valid? || !item.valid?)
-        import.orders.destroy_all
         import.destroy!
         raise InvalidDataError.new(i+1) # don't use zero based indexing for end users
       end

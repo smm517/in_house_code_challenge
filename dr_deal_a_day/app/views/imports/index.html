@@ -13,10 +13,10 @@
 <table>
   <thead>
     <tr>
-      <th>File Name</th>
+      <th>Data File</th>
       <th>Date Uploaded</th>
       <th>Revenue</th>
-      <th>Orders</th>
+      <th>Summary</th>
     </tr>
   </thead>
   <tbody>
@@ -26,7 +26,7 @@
           <td><%= link_to import.file_name, import_path(import, format: :csv) %></td>
           <td><%= import.created_at%></td>
           <td><%= number_to_currency(import.revenue) %></td>
-          <td><%= link_to "View Orders", import_path(import) %></td>
+          <td><%= link_to "View", import_path(import) %></td>
         </tr>
       <% end %>
     <% else %>
