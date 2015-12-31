@@ -51,6 +51,11 @@ class ImportsController < ApplicationController
   end
 
   def destroy
+    import = Import.find(params[:id])
+    import.orders.destroy_all
+    import.destroy!
+
+    redirect_to action: :index
   end
 
 end

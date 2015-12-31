@@ -27,3 +27,6 @@
   </tbody>
 </table>
 <h3>Revenue from this import: <%= number_to_currency(@import.revenue) %></h3>
+<div class="warning">
+  <%= link_to "Delete this import", import_path(@import), method: :delete, data: { confirm: "Are you sure you want to delete this import and all of its associated orders?" } %>
+</div>
