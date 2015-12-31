@@ -1,7 +1,7 @@
 class ImportsController < ApplicationController
 
   def index
-    @imports = Import.all
+    @imports = Import.order('created_at DESC')
     @total_revenue = Import.total_revenue
   end
 
