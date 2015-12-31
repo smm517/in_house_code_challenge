@@ -10,7 +10,7 @@ class ImportsController < ApplicationController
     duplicate_file_name = Import.where(file_name: data_file.try(:original_filename)).first
 
     if data_file.nil?
-      flash[:alert] = "Error: No data file was selected."
+      flash[:alert] = "Error: no data file was selected."
     elsif  duplicate_file_name.present?
       flash[:alert] = "A previous import has the same file name as the file you have selected. After ensuring that your file does not have the same data as the previous import, please upload it with a different file name."
       flash[:link_path] = import_path(duplicate_file_name.id)
@@ -24,7 +24,7 @@ class ImportsController < ApplicationController
         flash[:alert] = e.message
       end
     end
-    flash[:notice] = "Date was imported successfully." if flash[:alert].nil?
+    flash[:notice] = "Data was imported successfully." if flash[:alert].nil?
 
     redirect_to action: :index
   end

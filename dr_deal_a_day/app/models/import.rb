@@ -4,8 +4,13 @@ class Import < ActiveRecord::Base
   has_many :orders
 
   def self.run_import(file)
+    if file.content_type == "text/tab-separated-values"
+      csv = CSV.read(file.path, headers: true, header_converters: :symbol, col_sep: "\t")
+    else
+      csv = CSV.read(file.path, headers: true, header_converters: :symbol)
+    end
 
-    csv = CSV.read(file.path, headers: true, header_converters: :symbol)
+
     import = Import.create!(file_name: file.original_filename)
 
     csv.each_with_index do |row, i|
@@ -77,12 +82,12 @@ class Import < ActiveRecord::Base
 
   class EmptyDataFileError < StandardError
     def initialize
-      super("Error: File contains no data.")
+      super("Error: file contains no data.")
     end
   end
   class InvalidDataError < StandardError
     def initialize(row_number)
-      super("Error: File contains invalid or missing data in row #{row_number}")
+      super("Error: file contains invalid or missing data in row #{row_number}")
     end
   end
 
