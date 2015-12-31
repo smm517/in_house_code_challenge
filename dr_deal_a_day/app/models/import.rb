@@ -7,6 +7,12 @@ class Import < ActiveRecord::Base
 
   def self.run_import(file_path, original_filename, options = {})
 
+    duplicate_filename_import = Import.where(file_name: original_filename).first
+
+    if duplicate_filename_import.present?
+      raise DuplicateFileNameError.new(duplicate_filename_import.id)
+    end
+
     if options[:using_tsv]
       csv = CSV.read(file_path, headers: true, header_converters: :symbol, col_sep: "\t")
     else
@@ -42,6 +48,8 @@ class Import < ActiveRecord::Base
       import.destroy!
       raise EmptyDataFileError.new
     end
+
+    import
   end
 
 
@@ -65,12 +73,12 @@ class Import < ActiveRecord::Base
 
     Import.connection.select_value(
       <<-SQL
-        SELECT SUM(items.price)
+        SELECT SUM(items.price * orders.quantity)
         FROM items, orders
         WHERE orders.item_id = items.id
           AND orders.import_id = #{self.id}
       SQL
-    )
+    ).to_f
   end
 
   def self.total_revenue
@@ -78,11 +86,11 @@ class Import < ActiveRecord::Base
 
     connection.select_value(
       <<-SQL
-        SELECT SUM(items.price)
+        SELECT SUM(items.price * orders.quantity)
         FROM items, orders
         WHERE orders.item_id = items.id
       SQL
-    )
+    ).to_f
   end
 
   class EmptyDataFileError < StandardError
@@ -93,6 +101,14 @@ class Import < ActiveRecord::Base
   class InvalidDataError < StandardError
     def initialize(row_number)
       super("Error: file contains invalid or missing data in row #{row_number}")
+    end
+  end
+  class DuplicateFileNameError < StandardError
+    attr_reader :duplicate_import_id
+
+    def initialize(import_id)
+      super("A previous import has the same file name as the file you have selected. After ensuring that your file does not have the same data as the previous import, please upload it with a different file name.")
+      @duplicate_import_id = import_id
     end
   end
 

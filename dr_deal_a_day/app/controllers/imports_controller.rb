@@ -7,14 +7,9 @@ class ImportsController < ApplicationController
 
   def create
     data_file = params[:import_file]
-    duplicate_file_name = Import.where(file_name: data_file.try(:original_filename)).first
 
     if data_file.nil?
       flash[:alert] = "Error: no data file was selected."
-    elsif  duplicate_file_name.present?
-      flash[:alert] = "A previous import has the same file name as the file you have selected. After ensuring that your file does not have the same data as the previous import, please upload it with a different file name."
-      flash[:link_path] = import_path(duplicate_file_name.id)
-      flash[:link_text] = "Click here to view the previous import."
     else
       begin
         options = {}
@@ -23,10 +18,15 @@ class ImportsController < ApplicationController
         end
 
         Import.run_import(data_file.path, data_file.original_filename, options)
+
       rescue CSV::MalformedCSVError => e
         flash[:alert] = "Error: data file is incorrectly formatted."
       rescue Import::EmptyDataFileError, Import::InvalidDataError => e
         flash[:alert] = e.message
+      rescue Import::DuplicateFileNameError => e
+        flash[:alert] = e.message
+        flash[:link_path] = import_path(e.duplicate_import_id)
+        flash[:link_text] = "Click here to view the previous import."
       end
     end
     flash[:notice] = "Data was imported successfully." if flash[:alert].nil?
