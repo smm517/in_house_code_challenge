@@ -38,4 +38,12 @@ RSpec.describe Import, type: :model do
     Import.run_import('../example_files/more_example_data.csv', 'more_example_data.csv')
     expect(Import.total_revenue).to eql(155.0)
   end
+
+  it "calculates total revenue correctly after import deletion" do
+    Import.run_import('../example_files/example_data.csv', 'example_data.csv')
+    import = Import.run_import('../example_files/more_example_data.csv', 'more_example_data.csv')
+    expect(Import.total_revenue).to eql(155.0)
+    import.destroy!
+    expect(Import.total_revenue).to eql(95.0)
+  end
 end
