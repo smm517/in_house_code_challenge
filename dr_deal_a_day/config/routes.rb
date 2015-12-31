@@ -4,10 +4,6 @@ Rails.application.routes.draw do
 
   root 'imports#index'
 
-  resources :imports, except: [:new, :edit, :update] do
-    collection do
-      get 'export'
-    end
-  end
+  resources :imports, except: [:new, :edit, :update]
 
 end

@@ -1,4 +1,4 @@
-<h1>Data Imports</h1>
+<h1>Imports</h1>
 
 <h4><a id="show_upload" href="#">Upload a new data file</a></h4>
 
@@ -22,10 +22,10 @@
   <tbody>
     <% @imports.each do |import| %>
       <tr>
-        <td><%= import.file_name %></td>
+        <td><%= link_to import.file_name, import_path(import, format: :csv) %></td>
         <td><%= import.created_at%></td>
         <td><%= number_to_currency(import.revenue) %></td>
-        <td><%= link_to "View", import_path(import) %></td>
+        <td><%= link_to "View Orders", import_path(import) %></td>
       </tr>
     <% end %>
   </tbody>

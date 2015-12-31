@@ -12,12 +12,16 @@ class ImportsController < ApplicationController
 
   def show
     @import = Import.find(params[:id])
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        send_data @import.to_csv, filename: @import.file_name
+      }
+    end
   end
 
   def destroy
-  end
-
-  def export
   end
 
 end

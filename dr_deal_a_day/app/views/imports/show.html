@@ -1,6 +1,6 @@
 <h1>Import from <%= @import.created_at %></h1>
-<h4>Filename: <%= @import.file_name %></h4>
-<h3>Import Summary</h3>
+<h4>Data File: <%= link_to @import.file_name, import_path(@import, format: :csv) %></h4>
+<h3>Order Summary</h3>
 
 <table>
   <thead>

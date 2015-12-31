@@ -29,6 +29,19 @@ class Import < ActiveRecord::Base
     # TODO error handling
   end
 
+
+  def to_csv
+    header = ["purchaser name", "item description", "item price", "purchase count", "merchant address", "merchant name"]
+
+    CSV.generate(headers: true) do |csv|
+      csv << header
+
+      self.orders.each do |order|
+        csv << [order.purchaser.name, order.item.name, order.item.price, order.quantity, order.merchant.address, order.merchant.name]
+      end
+    end
+  end
+
   def revenue
     Import.connection.select_value(
       <<-SQL
@@ -39,5 +52,4 @@ class Import < ActiveRecord::Base
       SQL
     )
   end
-
 end
