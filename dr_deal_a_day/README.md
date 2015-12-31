@@ -1,5 +1,5 @@
 # Running the application
-The application can be run by using any rack based server. For my development, I simply used the default WEBrick rails server, which can be started with ```rails s ``` on the command line and navigating to ```locahost:3000``` in a web browser.
+The application can be run by using any rack based server. For my development, I simply used the default WEBrick rails server, which can be started with ```rails s ``` on the command line and navigating to ```locahost:3000``` in a web browser. No additional gems were installed, so ```bundle install``` shouldnd't be necessary for an environment that has already been setup for the original skeleton project.
 
 # Interacting with the application
 Before I describe how to interact with the application, I wanted to point out a few changes in my implementation from the original specifaction:
