@@ -3,15 +3,16 @@ class Import < ActiveRecord::Base
 
   has_many :orders
 
-  def self.run_import(file)
-    if file.content_type == "text/tab-separated-values"
-      csv = CSV.read(file.path, headers: true, header_converters: :symbol, col_sep: "\t")
+  def self.run_import(file_path, original_filename, options = {})
+
+    if options[:using_tsv]
+      csv = CSV.read(file_path, headers: true, header_converters: :symbol, col_sep: "\t")
     else
-      csv = CSV.read(file.path, headers: true, header_converters: :symbol)
+      csv = CSV.read(file_path, headers: true, header_converters: :symbol)
     end
 
 
-    import = Import.create!(file_name: file.original_filename)
+    import = Import.create!(file_name: original_filename)
 
     csv.each_with_index do |row, i|
 
@@ -43,10 +44,13 @@ class Import < ActiveRecord::Base
   end
 
 
-  def to_csv
-    header = ["purchaser name", "item description", "item price", "purchase count", "merchant address", "merchant name"]
+  def to_csv(options = {})
+    if options[:using_tsv]
+      options = { col_sep: "\t" }
+    end
 
-    CSV.generate(headers: true) do |csv|
+    header = ["purchaser name", "item description", "item price", "purchase count", "merchant address", "merchant name"]
+    CSV.generate(options.merge(headers: true)) do |csv|
       csv << header
 
       self.orders.each do |order|

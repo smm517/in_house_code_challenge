@@ -17,7 +17,12 @@ class ImportsController < ApplicationController
       flash[:link_text] = "Click here to view the previous import."
     else
       begin
-        Import.run_import(data_file)
+        options = {}
+        if data_file.content_type == "text/tab-separated-values"
+          options[:using_tsv] = true
+        end
+
+        Import.run_import(data_file.path, data_file.original_filename, options)
       rescue CSV::MalformedCSVError => e
         flash[:alert] = "Error: data file is incorrectly formatted."
       rescue Import::EmptyDataFileError, Import::InvalidDataError => e
@@ -35,7 +40,12 @@ class ImportsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv {
-        send_data @import.to_csv, filename: @import.file_name
+        options = {}
+
+        if File.extname(@import.file_name) == ".tsv"
+          options[:using_tsv] = true
+        end
+        send_data @import.to_csv(options), filename: @import.file_name
       }
     end
   end
