@@ -39,3 +39,4 @@ This error occurs when a file is attempted to be imported but a previous import 
 
 
 # Running tests
+Tests for each model have been written using the RSpec framework. All tests can be run by navigating to the root of the Rails project and executing ```rspec```. To only run tests for a specific file, execute ```rspec spec/models/[file]``` form the root of the Rails project.
