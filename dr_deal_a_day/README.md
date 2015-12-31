@@ -1,5 +1,5 @@
 # Running the application
-The application can be run by using any rack based server. For my development, I simply used the default WEBrick rails server, which can be started with ```rails s ``` on the command line and navigating to ```locahost:3000``` in a web browser. No additional gems were installed, so ```bundle install``` shouldnd't be necessary for an environment that has already been setup for the original skeleton project.
+The application can be run by using any rack based server. For my development, I simply used the default WEBrick rails server, which can be started with ```rails s ``` on the command line and navigating to ```locahost:3000``` in a web browser. No additional gems were installed, so ```bundle install``` shouldn't be necessary for an environment that has already been setup for the original skeleton project.
 
 # Interacting with the application
 Before I describe how to interact with the application, I wanted to point out a few changes in my implementation from the original specifaction:
@@ -35,8 +35,8 @@ This error occurs when a row in the selected file does not satisfy valid data re
 This error occurs when the selected files has no rows of data in it.
 
 ###A previous import has the same file name...
-This error occurs when a file is attempted to be imported but a previous import used a file of the same name. To avoid data duplication, the application requires that no two imports have the same filename. The error message will contain a link to the previous import with the same file name, where the user can compare the data to see if uploading the new file would result in duplication. If duplication would not occur, the user is instructed to change the file name and reupload it.
+This error occurs when a file is attempted to be imported but a previous import used a file of the same name. To avoid data duplication, the application requires that no two imports have the same file name. The error message will contain a link to the previous import with the same file name, where the user can compare the data to see if uploading the new file would result in duplication. If duplication would not occur, the user is instructed to change the file name and reupload it.
 
 
 # Running tests
-Tests for each model have been written using the RSpec framework. All tests can be run by navigating to the root of the Rails project and executing ```rspec```. To only run tests for a specific file, execute ```rspec spec/models/[file]``` form the root of the Rails project.
+Tests for each model have been written using the RSpec framework. All tests can be run by navigating to the root of the Rails project and executing ```rspec```. To only run tests for a specific file, execute ```rspec spec/models/[file]``` fromm the root of the Rails project.
