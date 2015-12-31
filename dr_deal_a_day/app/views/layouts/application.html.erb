@@ -7,8 +7,32 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+<% if flash[:notice] %>
+  <div class="notice">
+    <%= flash[:notice] %>
+    <span class="close_message">&#65336;</span>
+    <% if flash[:link_text].present? && flash[:link_path].present? %>
+      <p><%= link_to flash[:link_text], flash[:link_path] %></p>
+    <% end %>
+  </div>
+<% end %>
+<% if flash[:alert] %>
+  <div class="alert">
+    <%= flash[:alert] %>
+    <span class="close_message">&#65336;</span>
+    <% if flash[:link_text].present? && flash[:link_path].present? %>
+      <p><%= link_to flash[:link_text], flash[:link_path] %></p>
+    <% end %>
+  </div>
+<% end %>
 
 <%= yield %>
+
+<script>
+  $(".close_message").on("click", function() {
+    $(this).parent().remove();
+  });
+</script>
 
 </body>
 </html>

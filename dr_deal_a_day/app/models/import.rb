@@ -5,9 +5,10 @@ class Import < ActiveRecord::Base
 
   def self.run_import(file)
 
+    csv = CSV.read(file.path, headers: true, header_converters: :symbol)
     import = Import.create!(file_name: file.original_filename)
 
-    CSV.foreach(file.path, headers: true, header_converters: :symbol) do |row|
+    csv.each_with_index do |row, i|
 
       purchaser = Purchaser.where(name: row[:purchaser_name]).first
       purchaser = Purchaser.new(name: row[:purchaser_name]) if purchaser.nil?
@@ -18,15 +19,22 @@ class Import < ActiveRecord::Base
       item = Item.where(name: row[:item_description], price: row[:item_price]).first
       item = Item.new(name: row[:item_description], price: row[:item_price]) if item.nil?
 
-      purchaser.save!
-      merchant.save!
-      item.save!
+      if (!purchaser.valid? || !merchant.valid? || !item.valid?)
+        import.orders.destroy_all
+        import.destroy!
+        raise InvalidDataError.new(i+1) # don't use zero based indexing for end users
+      end
 
+      purchaser.save
+      merchant.save
+      item.save
       Order.create!(import_id: import.id, merchant_id: merchant.id, item_id: item.id, purchaser_id: purchaser.id, quantity: row[:purchase_count])
-
     end
 
-    # TODO error handling
+    if import.orders.empty?
+      import.destroy!
+      raise EmptyDataFileError.new
+    end
   end
 
 
@@ -43,6 +51,8 @@ class Import < ActiveRecord::Base
   end
 
   def revenue
+    return 0 if self.orders.empty?
+
     Import.connection.select_value(
       <<-SQL
         SELECT SUM(items.price)
@@ -52,4 +62,28 @@ class Import < ActiveRecord::Base
       SQL
     )
   end
+
+  def self.total_revenue
+    return 0 if Import.all.empty?
+
+    connection.select_value(
+      <<-SQL
+        SELECT SUM(items.price)
+        FROM items, orders
+        WHERE orders.item_id = items.id
+      SQL
+    )
+  end
+
+  class EmptyDataFileError < StandardError
+    def initialize
+      super("Error: File contains no data.")
+    end
+  end
+  class InvalidDataError < StandardError
+    def initialize(row_number)
+      super("Error: File contains invalid or missing data in row #{row_number}")
+    end
+  end
+
 end

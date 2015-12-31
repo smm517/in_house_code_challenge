@@ -16,16 +16,22 @@
       <th>File Name</th>
       <th>Date Uploaded</th>
       <th>Revenue</th>
-      <th></th>
+      <th>Orders</th>
     </tr>
   </thead>
   <tbody>
-    <% @imports.each do |import| %>
+    <% if @imports.any? %>
+      <% @imports.each do |import| %>
+        <tr>
+          <td><%= link_to import.file_name, import_path(import, format: :csv) %></td>
+          <td><%= import.created_at%></td>
+          <td><%= number_to_currency(import.revenue) %></td>
+          <td><%= link_to "View Orders", import_path(import) %></td>
+        </tr>
+      <% end %>
+    <% else %>
       <tr>
-        <td><%= link_to import.file_name, import_path(import, format: :csv) %></td>
-        <td><%= import.created_at%></td>
-        <td><%= number_to_currency(import.revenue) %></td>
-        <td><%= link_to "View Orders", import_path(import) %></td>
+        <td colspan="4">No data files have been imported.</td>
       </tr>
     <% end %>
   </tbody>
