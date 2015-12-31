@@ -4,5 +4,6 @@ class Order < ActiveRecord::Base
   belongs_to :purchaser
   belongs_to :item
 
-  validates_presence_of :import_id, :merchant_id, :purchaser_id, :item_id
+  validates_presence_of :import_id, :merchant_id, :purchaser_id, :item_id, :quantity
+  validates_numericality_of :quantity
 end

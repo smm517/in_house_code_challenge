@@ -3,6 +3,8 @@ class Import < ActiveRecord::Base
 
   has_many :orders, dependent: :destroy
 
+  validates_presence_of :file_name
+
   def self.run_import(file_path, original_filename, options = {})
 
     if options[:using_tsv]

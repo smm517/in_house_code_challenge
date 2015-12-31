@@ -1,10 +1,10 @@
 # Running the application
-The application can be run by using any rack based server. For my development, I simply used the default WEBrick rails server, which can be started with ```rails s ``` on the command line.
+The application can be run by using any rack based server. For my development, I simply used the default WEBrick rails server, which can be started with ```rails s ``` on the command line and navigating to ```locahost:3000``` in a web browser.
 
 # Interacting with the application
 Before I describe how to interact with the application, I wanted to point out a few changes in my implementation from the original specifaction:
-- Rather than saving the data files along with the data in the database, I instead decided to only save the data in the database and use an import/export model. I decided to do this because I thought storing both the data both in the original file and the database was redundant, and it also is very easy to reproduce the files with an export if need be. I also think that relying more on the database will help the staff at DrDealADay learn the benefits of the database and rely on text files less altogether.
-- I decided to show a table of all previous imports and their revenues, sorted by most recent, instead of only showing the revenue from the last uploaded file. I chose to do this because I thought it would be more useful to the user.
+- Rather than saving the data files along with the data in the database, I instead decided to only save the data in the database and use an import/export model. I decided to do this because I thought storing the data both in the original file and the database was redundant, and it is also very easy to reproduce the files with an export if need be. Additionally, I think that relying more on the database will help the staff at DrDealADay learn the benefits of the database and rely on text files less altogether.
+- I decided to show a table of all previous imports and their revenues, sorted by most recent, instead of only showing the revenue from the last uploaded file. I chose to do this because I thought it would be more useful for the user.
 - The table of previous imports also allows the user to navigate to a different page that displays a table of all orders associated with that data file import. This page is intended to help identify imports and help avoid duplicate uploads.
 
 ## Imports page
@@ -14,7 +14,7 @@ To import a new data file, click the 'Upload a new data file' link and a form to
 
 The 'Data File' column in the imports table includes a link that will trigger an export and download of the import data in csv/tsv format. Each entry also inlcudes a 'View' link, which will navigate to the import summary page.
 
-## Import sumamry page
+## Import summary page
 The import summary page shows a table of all orders associated to the import that application is currently displaying. An export of the data in csv/tsv format can also be obtained on this page, by clicking on the 'Data File' link.
 
 In the top right corner, there is a button that will delete the import that is being displayed. A confirmation message will appear before deletion takes place. All orders associated to the import will also be deleted.
